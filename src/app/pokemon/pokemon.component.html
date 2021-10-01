@@ -1,0 +1,175 @@
+<style>
+    .columna1 {
+        columns: 100px 3;
+    }
+
+    .columna2 {
+        columns: 50px 4;
+    }
+
+    #centrador {
+        position: relative;
+        width: 300px;
+        height: 450px;
+        margin: auto;
+
+    }
+
+    .urlImage {
+
+        position: absolute;
+        width: 200px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+
+
+    }
+
+    .fondo {
+        position: static;
+        border-radius: 20px;
+        height: 450px;
+        width: 300px;
+        z-index: -1;
+    }
+</style>
+
+<script>
+   
+    function actualizar() { location.reload(true); }
+    //Función para actualizar cada 4 segundos(4000 milisegundos)
+    setInterval("actualizar()", 4000);
+</script>
+
+
+
+<!-- div captura la respuesta 404 del api envieando al script para mostrar alerta 
+
+<div *ngIf="alert" class="col-md-6 mb-2">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" ng-value="404">
+        <strong>El pokemon no existe</strong> Por favor ingresa otro pokemon a buscar.
+        <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"
+            onclick="location.reload()"></button>
+
+    </div>
+</div>    -->
+
+
+<!-- card con caja de busqueda del pokemon  -->
+
+<div class="card-body">
+    <div class="container">
+        <div class="row col-6">
+            <div class="d-flex">
+    
+                <a class="navbar-brand text-black">Nombre</a>
+                <input type="text" [(ngModel)]="name" class="form-control me-2" placeholder="Ingresa el pokemon">
+                <button (click)="search()" type="button"  class="btn btn-secondary">Buscar</button>
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div>
+    validacion de respuesta de componente si no obtiene respuesta con datos de la api y en 
+    cambio muestra un error 404 la app mostrara una alerta y si si la respuesta es con datos de muestra un accordion 
+    con la info del pokemon en un accordion
+</div> -->
+
+<ng-container *ngIf="alert; else elseTemplate">
+    <div *ngIf="alert" class="col-md-6 mb-2">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" ng-value="404">
+            <strong>El pokemon no existe</strong> Por favor ingresa otro pokemon a buscar.
+            <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"
+                onclick="location.reload()"></button>
+    
+        </div>
+    </div>
+      
+</ng-container>
+ <!-- muestra la info del pokemon la respuesta de la api en un acordion -->
+<ng-template #elseTemplate>
+    <div *ngIf="acord">
+    <div ng-value="si" class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <strong>Ver información del pokemon</strong>
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="card text-center border-5 rounded">
+                    <div class="card-header bg-secondary rounded-pill">
+                
+                        <p><b><img src="/assets/image/pokedex.png"> Información general y Estátus base</b></p>
+                    </div>
+                
+                    <div class="card-body " style="position: static">
+                
+                        <!--centramos la imagen en el card  -->
+                        <div id="centrador" class="col-md-6">
+                            <img src="/assets/image/fondo1.png" alt="fondo" class="fondo">
+                            <img src="{{urlImage}}" alt="" class="urlImage">
+                        </div>
+                
+                
+                
+                
+                        <!-- agregamos al card title valores de position y el nombre del pokemon -->
+                        <h5 class="card-title"><strong>n.° {{position}} {{namePoke}}</strong></h5>
+                
+                        <p class="card-text">Experiencia base <strong>{{experience}}</strong></p>
+                        <div class="container columna1">
+                            <!-- agregamos lista de card para los detalles del pokemon -->
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Puntos de salud
+                                    <strong>{{hp}}</strong>
+                                </li>
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Velocidad
+                                    <strong>{{velocity}}</strong>
+                                </li>
+                            </ul>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Ataque
+                                    <strong>{{attack}}</strong>
+                                </li>
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Ataque especial
+                                    <strong>{{specialAtacck}}</strong>
+                                </li>
+                
+                            </ul>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Defensa
+                                    <strong>{{defense}}</strong>
+                                </li>
+                                <li class="list-group-item p-3 mb-2 bg-secondary text-dark rounded-pill">Defensa
+                                    especial
+                                    <strong>{{specialDefense}}</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-secondary rounded-pill">
+                        <p>Tipo <strong>{{type}}</strong></p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+</ng-template>
+ <!-- pie de padina de la app -->
+
+<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-12 text-center">
+        <span class="text-muted">© 2021 Realizado por,<strong> Josimar García</strong></span>
+    </div>
+</footer>
